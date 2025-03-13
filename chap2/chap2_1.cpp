@@ -7,6 +7,12 @@
 using namespace std;
 
 // 2.1.3
+/**
+ * @brief Coverts a complex number from general form to exponential form.
+ * @param a is a complex number in the general form
+ * Take the absolute value of the complex number and the phase angle of the complex number.
+ * @return We return it as r * e^(theta(i))
+ */
 complex<double> Gen2Exp(complex<double> a) {
     double r = abs(a);
     double theta = arg(a);
@@ -14,6 +20,12 @@ complex<double> Gen2Exp(complex<double> a) {
     return r * exp(complex<double>(theta));
 }
 
+/**
+ * @brief Coverts a complex number from general form to polar form.
+ * @param a is a complex number in the general form
+ * Take the absolute value of the complex number and the phase angle of the complex number.
+ * @return We return it as (r, theta).
+ */
 complex<double> Gen2Pol(complex<double> a) {
     double r = abs(a);
     double theta = arg(a);
@@ -21,6 +33,12 @@ complex<double> Gen2Pol(complex<double> a) {
     return polar(r, theta);
 }
 
+/**
+ * @brief Coverts a complex number from polar form to general form.
+ * @param a is a complex number in the polar form
+ * Take the real number of the polar form r (r, theta) and the imaginary theta.
+ * @return complex number of the real and imaginary r + theta * i.
+ */
 complex<double> Pol2Gen(complex<double> a) {
     double r = a.real();
     double i = a.imag();
@@ -28,6 +46,12 @@ complex<double> Pol2Gen(complex<double> a) {
     return complex<double>(r, i);
 }
 
+/**
+ * @brief Coverts a complex number from polar form to exponential form.
+ * @param a is a complex number in the polar form
+ * Take the real number of the polar form r (r, theta) and the imaginary theta.
+ * @return complex number of the real and imaginary in exponential form r * e^i(theta)
+ */
 complex<double> Pol2Exp(complex<double> a) {
     double r = a.real();
     double theta = a.imag();
@@ -35,6 +59,12 @@ complex<double> Pol2Exp(complex<double> a) {
     return r * exp(complex<double>());
 }
 
+/**
+ * @brief Coverts a complex number from exponential form to polar form.
+ * @param a is a complex number in the exponential form
+ * Take the real number of the polar form r, r * e^i(theta) and the imaginary theta.
+ * @return complex number of the real and imaginary in polar form (r, i).
+ */
 complex<double> Exp2Pol(complex<double> a) {
     double r = abs(a);
     double theta = arg(a);
