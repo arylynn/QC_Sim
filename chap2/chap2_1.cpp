@@ -550,6 +550,47 @@ vector<complex<double>> stateNorm(vector<complex<double>> a) {
     return a;
 }
 
-vector<complex<double>> stateNorm(vector<complex<double>> a, double b) {
+/**
+ * @brief Finds the phase of a state vector.
+ * @param a, r takes in a state vector and a real number.
+ * Call stateNorm to get the normalized vector and then we multiply it by the phase
+ * e^(ir) to get the state vector with the specified phase.
+ * @return return the state vector with phase e^(ir).
+ */
+vector<complex<double>> statePhase(vector<complex<double>> a, double r) {
+    a = stateNorm(a);
+    complex<double> phase = exp(complex<double>(r));
+
+    for (int i = 0; i < a.size(); i++) {
+        a[i] = a[i] * phase;
+    }
+
+    return a;
+}
+
+/**
+ * @brief Takes in a ket vector and find its associated bra vector.
+ * @param a a finite deminensional ket vector. 
+ * A ket vector is a column vector and we take the dagger so we transpose and conjuagate it
+ * to a row vector. we can skip the transpose part since transpose of a transpose are equal
+ * so we just take the conjugate and return its as a row vector. 
+ * @return the finite dimensional bra vector assiociated with it. 
+ */
+vector<complex<double>> ket2Bra(vector<complex<double>> a) {
+    for (int i = 0; i < a.size(); i++) {
+        a[i] = conj(a[i]); 
+    }
+
+    return a;
+}
+
+/**
+ * 
+ */
+vector<complex<double>> bra2Ket(vector<complex<double>> a) {
+    for (int i = 0; i < a.size(); i++) {
+        a[i] = conj(a[i]); 
+    }
+
     return a;
 }
