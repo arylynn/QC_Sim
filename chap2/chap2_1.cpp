@@ -585,7 +585,12 @@ vector<complex<double>> ket2Bra(vector<complex<double>> a) {
 }
 
 /**
- * 
+ * @brief Takes in a bra vector and find its associated bra vector.
+ * @param a a finite deminensional bra vector. 
+ * A ket vector is a column vector and we take the dagger so we transpose and conjuagate it
+ * to a row vector. we can skip the transpose part since transpose of a transpose are equal
+ * so we just take the conjugate and return its as a row vector. 
+ * @return the finite dimensional ket vector assiociated with it. 
  */
 vector<complex<double>> bra2Ket(vector<complex<double>> a) {
     for (int i = 0; i < a.size(); i++) {
@@ -593,4 +598,22 @@ vector<complex<double>> bra2Ket(vector<complex<double>> a) {
     }
 
     return a;
+}
+
+/**
+ * 
+ */
+vector<vector<complex<double>>> ketBraMatrix(vector<complex<double>> a, vector<complex<double>> b) {
+    int rows = a.size();
+    int cols = b.size();
+
+    vector<vector<complex<double>>> ketbra(rows, vector<complex<double>>(cols));
+
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = 0; j < b.size(); j++) {
+            ketbra[i][j] = a[i] * b[j];
+        }
+    }
+
+    return ketbra;
 }
