@@ -72,6 +72,13 @@ complex<double> Exp2Pol(complex<double> a) {
     return polar(r, theta);
 }
 
+/**
+ * @brief Coverts a complex number from exponential form to general form.
+ * @param a is a complex number in the exponential form
+ * Take the real number of the exponential form r, r * e^i(theta) and the imaginary theta.
+ * Takes the cosine and the sin of the theta multiply by the real.
+ * @return complex number of the real and imaginary for the general form a + bi.
+ */
 complex<double> Exp2Gen(complex<double> a) {
     double r = a.real();
     double theta = a.imag();
@@ -523,4 +530,26 @@ vector<vector<complex<double>>> colUnitaryVecState(vector<vector<complex<double>
 
 int main() {
     cout << "hello world" << endl;
+}
+
+// 4.1.6
+/**
+ * @brief Takes a state vector and normalizes the vector.
+ * @param a is a state vector of a quantuam system.
+ * Calls normalize functions to get the normvalue of the vector and then normalizes 
+ * the vector with that value.
+ * @return the normalized vector after applying the normvalue.
+ */
+vector<complex<double>> stateNorm(vector<complex<double>> a) {
+    complex<double> x = normalize(a);
+
+    for (int i = 0; i < a.size(); i++) {
+        a[i] = a[i] / x;
+    }
+
+    return a;
+}
+
+vector<complex<double>> stateNorm(vector<complex<double>> a, double b) {
+    return a;
 }
