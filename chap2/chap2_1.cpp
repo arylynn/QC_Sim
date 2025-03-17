@@ -6,6 +6,10 @@
 
 using namespace std;
 
+typedef vector<vector<complex<double>>> Matrix;
+typedef vector<complex<double>> Vector;
+typedef complex<double> Complex;
+
 // 2.1.3
 /**
  * @brief Coverts a complex number from general form to exponential form.
@@ -13,11 +17,11 @@ using namespace std;
  * Take the absolute value of the complex number and the phase angle of the complex number.
  * @return We return it as r * e^(theta(i))
  */
-complex<double> Gen2Exp(complex<double> a) {
+Complex Gen2Exp(Complex a) {
     double r = abs(a);
     double theta = arg(a);
 
-    return r * exp(complex<double>(theta));
+    return r * exp(Complex(theta));
 }
 
 /**
@@ -26,7 +30,7 @@ complex<double> Gen2Exp(complex<double> a) {
  * Take the absolute value of the complex number and the phase angle of the complex number.
  * @return We return it as (r, theta).
  */
-complex<double> Gen2Pol(complex<double> a) {
+Complex Gen2Pol(Complex a) {
     double r = abs(a);
     double theta = arg(a);
 
@@ -39,11 +43,11 @@ complex<double> Gen2Pol(complex<double> a) {
  * Take the real number of the polar form r (r, theta) and the imaginary theta.
  * @return complex number of the real and imaginary r + theta * i.
  */
-complex<double> Pol2Gen(complex<double> a) {
+Complex Pol2Gen(Complex a) {
     double r = a.real();
     double i = a.imag();
 
-    return complex<double>(r, i);
+    return Complex(r, i);
 }
 
 /**
@@ -52,11 +56,11 @@ complex<double> Pol2Gen(complex<double> a) {
  * Take the real number of the polar form r (r, theta) and the imaginary theta.
  * @return complex number of the real and imaginary in exponential form r * e^i(theta)
  */
-complex<double> Pol2Exp(complex<double> a) {
+Complex Pol2Exp(Complex a) {
     double r = a.real();
     double theta = a.imag();
 
-    return r * exp(complex<double>());
+    return r * exp(Complex());
 }
 
 /**
@@ -65,7 +69,7 @@ complex<double> Pol2Exp(complex<double> a) {
  * Take the real number of the polar form r, r * e^i(theta) and the imaginary theta.
  * @return complex number of the real and imaginary in polar form (r, i).
  */
-complex<double> Exp2Pol(complex<double> a) {
+Complex Exp2Pol(Complex a) {
     double r = abs(a);
     double theta = arg(a);
 
@@ -79,53 +83,53 @@ complex<double> Exp2Pol(complex<double> a) {
  * Takes the cosine and the sin of the theta multiply by the real.
  * @return complex number of the real and imaginary for the general form a + bi.
  */
-complex<double> Exp2Gen(complex<double> a) {
+Complex Exp2Gen(Complex a) {
     double r = a.real();
     double theta = a.imag();
 
-    return complex<double> (r * cos(theta), r * sin(theta));
+    return Complex (r * cos(theta), r * sin(theta));
 }
 
 // 2.1.6
-complex<double> add(complex<double> a, complex<double> b) {
+Complex add(Complex a, Complex b) {
     return a + b;
 }
 
-complex<double> sub(complex<double> a, complex<double> b) {
+Complex sub(Complex a, Complex b) {
     return a - b;
 }
 
-complex<double> mul(complex<double> a, complex<double> b) {
+Complex mul(Complex a, Complex b) {
     return a * b;
 }
 
-complex<double> div(complex<double> a, complex<double> b) {
+Complex div(Complex a, Complex b) {
     return a / b;
 }
 
 // 2.1.12
-complex<double> conjugate(complex<double> a) {
-    return complex<double>(a.real(), -a.imag());
+Complex conjugate(Complex a) {
+    return Complex(a.real(), -a.imag());
 }
 
-complex<double> modulus(complex<double> a) {
+Complex modulus(Complex a) {
     return abs(a);
 }
 
-complex<double> norm(complex<double> a) {
+Complex norm(Complex a) {
     return Exp2Gen(a);
 }
 
-complex<double> diff(complex<double> a, complex<double> b) {
+Complex diff(Complex a, Complex b) {
     return abs(a) + abs(b) - (abs(a) + abs(b));
 }
 
 // 2.1.15
-vector<vector<complex<double>>> sumMatrix(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b) {
+Matrix sumMatrix(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> sum(row, vector<complex<double>>(col));
+    Matrix sum(row, Vector(col));
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -136,11 +140,11 @@ vector<vector<complex<double>>> sumMatrix(vector<vector<complex<double>>> a, vec
     return sum;
 }
 
-vector<vector<complex<double>>> scalarMultiply(vector<vector<complex<double>>> a, complex<double> b) {
+Matrix scalarMultiply(Matrix a, Complex b) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> scalar(row, vector<complex<double>>(col));
+    Matrix scalar(row, Vector(col));
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -151,13 +155,13 @@ vector<vector<complex<double>>> scalarMultiply(vector<vector<complex<double>>> a
     return scalar;
 }
 
-vector<vector<complex<double>>> mulMatrix(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b) {
+Matrix mulMatrix(Matrix a, Matrix b) {
     int rowa = a.size();
     int cola = a[0].size();
     int rowb = b.size();
     int colb = b[0].size();
 
-    vector<vector<complex<double>>> product(rowa, vector<complex<double>>(colb));
+    Matrix product(rowa, Vector(colb));
 
     for (int i = 0; i < rowa; i++) {
         for (int j = 0; j < colb; j++) {
@@ -170,11 +174,11 @@ vector<vector<complex<double>>> mulMatrix(vector<vector<complex<double>>> a, vec
     return product;
 }
 
-vector<vector<complex<double>>> transposeMatrix(vector<vector<complex<double>>> a) {
+Matrix transposeMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> transpose(row, vector<complex<double>>(col));
+    Matrix transpose(row, Vector(col));
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -186,11 +190,11 @@ vector<vector<complex<double>>> transposeMatrix(vector<vector<complex<double>>> 
 }
 
 // 2.1.20
-vector<vector<complex<double>>> conjugateMatrix(vector<vector<complex<double>>> a) {
+Matrix conjugateMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> conjugateM(row, vector<complex<double>>(col));
+    Matrix conjugateM(row, Vector(col));
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -201,11 +205,11 @@ vector<vector<complex<double>>> conjugateMatrix(vector<vector<complex<double>>> 
     return conjugateM;
 }
 
-vector<vector<complex<double>>> daggerMatrix(vector<vector<complex<double>>> a) {
+Matrix daggerMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> matrix(row, vector<complex<double>>(col));
+    Matrix matrix(row, Vector(col));
 
     matrix = transposeMatrix(a);
     matrix = conjugateMatrix(matrix);
@@ -213,12 +217,12 @@ vector<vector<complex<double>>> daggerMatrix(vector<vector<complex<double>>> a) 
     return matrix;
 }
 
-vector<vector<complex<double>>> traceMatrix(vector<vector<complex<double>>> a) {
+Matrix traceMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
-    complex<double> total = 0;
+    Complex total = 0;
 
-    vector<vector<complex<double>>> trace(row, vector<complex<double>>(col));
+    Matrix trace(row, Vector(col));
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
@@ -232,9 +236,9 @@ vector<vector<complex<double>>> traceMatrix(vector<vector<complex<double>>> a) {
 }
 
 // 2.2.18
-complex<double> normalize(vector<complex<double>> a) {
+Complex normalize(Vector a) {
     int row = a.size();
-    complex<double> normValue = 0;
+    Complex normValue = 0;
 
     for (int i = 0; i < row; i++) {
         normValue = normValue + mul(a[i], conjugate(a[i]));
@@ -245,11 +249,11 @@ complex<double> normalize(vector<complex<double>> a) {
     return normValue;
 }
 
-vector<complex<double>> normMatrix(vector<complex<double>> a) {
+Vector normMatrix(Vector a) {
     int row = a.size();
-    complex<double> total = 0;
+    Complex total = 0;
 
-    vector<complex<double>> normv(row);
+    Vector normv(row);
 
     for (int i = 0; i < row; i++) {
         normv[i] = normv[i] / normalize(a);
@@ -258,14 +262,14 @@ vector<complex<double>> normMatrix(vector<complex<double>> a) {
     return normv;
 }
 
-bool isNormal(vector<complex<double>> a) {
-    complex<double> b = 1;
+bool isNormal(Vector a) {
+    Complex b = 1;
     return normalize(a) == b;
 }
 
-bool isOrthogonal(vector<complex<double>> a) {
+bool isOrthogonal(Vector a) {
     int row = a.size();
-    complex<double> total = a[0];
+    Complex total = a[0];
 
     for (int i = 0; i < row; i++) {
         if (total == a[i]) {
@@ -278,12 +282,12 @@ bool isOrthogonal(vector<complex<double>> a) {
     return true;
 }
 
-bool isOrthonormal(vector<complex<double>> a) {
+bool isOrthonormal(Vector a) {
     return isNormal(a) && isOrthogonal(a);
 }
 
 // 2.3.5
-bool isEqual(vector<complex<double>> a, vector<complex<double>> b) {
+bool isEqual(Vector a, Vector b) {
     int row = a.size();
 
     for (int i = 0; i < row; i++) {
@@ -295,7 +299,7 @@ bool isEqual(vector<complex<double>> a, vector<complex<double>> b) {
     return true;
 }
 
-bool isEqual(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b) {
+bool isEqual(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
 
@@ -310,8 +314,8 @@ bool isEqual(vector<vector<complex<double>>> a, vector<vector<complex<double>>> 
     return true;
 }
 
-bool isSymmetric(vector<vector<complex<double>>> a) {
-    vector<vector<complex<double>>> b = transposeMatrix(a);
+bool isSymmetric(Matrix a) {
+    Matrix b = transposeMatrix(a);
     int row = a.size();
     int col = a[0].size();
 
@@ -326,10 +330,10 @@ bool isSymmetric(vector<vector<complex<double>>> a) {
     return true;
 }
 
-bool isOrthogonalMatrix(vector<vector<complex<double>>> a) {
-    vector<vector<complex<double>>> b = transposeMatrix(a);
+bool isOrthogonalMatrix(Matrix a) {
+    Matrix b = transposeMatrix(a);
     a = mulMatrix(a, b);
-    complex<double> x = 1.0;
+    Complex x = 1.0;
     int row = a.size();
     int col = a[0].size();
 
@@ -344,8 +348,8 @@ bool isOrthogonalMatrix(vector<vector<complex<double>>> a) {
     return true;
 }
 
-bool isHermitian(vector<vector<complex<double>>> a) {
-    vector<vector<complex<double>>> b = daggerMatrix(a);
+bool isHermitian(Matrix a) {
+    Matrix b = daggerMatrix(a);
     int row = a.size();
     int col = a[0].size();
 
@@ -360,10 +364,10 @@ bool isHermitian(vector<vector<complex<double>>> a) {
     return true;
 }
 
-bool isUnitary(vector<vector<complex<double>>> a) {
-    vector<vector<complex<double>>> b = daggerMatrix(a);
+bool isUnitary(Matrix a) {
+    Matrix b = daggerMatrix(a);
     a = mulMatrix(a, b);
-    complex<double> x = 1.0;
+    Complex x = 1.0;
     int row = a.size();
     int col = a[0].size();
 
@@ -379,17 +383,17 @@ bool isUnitary(vector<vector<complex<double>>> a) {
 }
 
 // 2.3.10
-bool isEigen(vector<vector<complex<double>>> a, vector<complex<double>>b, complex<double> c) {
+bool isEigen(Matrix a, Vector b, Complex c) {
     return true;
 }
 
 // 2.4.7
-vector<vector<complex<double>>> tensor(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b) {
+Matrix tensor(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> tensorProduct;
-    complex<double> t;
+    Matrix tensorProduct;
+    Complex t;
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             t = a[i][j];
@@ -401,13 +405,13 @@ vector<vector<complex<double>>> tensor(vector<vector<complex<double>>> a, vector
 }
 
 // 3.1.7
-bool isEigen(vector<vector<complex<double>>> a) {
+bool isEigen(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
-            if (a[i][j] != (complex<double>) 0 || a[i][j] != (complex<double>) 1) {
+            if (a[i][j] != (Complex) 0 || a[i][j] != (Complex) 1) {
                 return false;
             }
         }
@@ -416,7 +420,7 @@ bool isEigen(vector<vector<complex<double>>> a) {
     return true;
 }
 
-vector<vector<complex<double>>> matrixEx(vector<vector<complex<double>>> a, int x) {
+Matrix matrixEx(Matrix a, int x) {
     for (int i = 0; i < x; i++) {
         a = mulMatrix(a, a);
     }
@@ -425,11 +429,11 @@ vector<vector<complex<double>>> matrixEx(vector<vector<complex<double>>> a, int 
 }
 
 
-vector<vector<complex<double>>> vectorEx(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b, int x) {
+Matrix vectorEx(Matrix a, Matrix b, int x) {
     int row = b.size();
     int col = b[0].size();
 
-    vector<vector<complex<double>>> c(row, vector<complex<double>>(1));
+    Matrix c(row, Vector(1));
 
     for (int i = 0; i < x; i++) {
         c = mulMatrix(b, a);
@@ -438,11 +442,11 @@ vector<vector<complex<double>>> vectorEx(vector<vector<complex<double>>> a, vect
     return c;
 }
 
-vector<vector<complex<double>>> vectorMoreEx(vector<vector<complex<double>>> a, vector<vector<complex<double>>> b, vector<vector<complex<double>>> c, int x) {
+Matrix vectorMoreEx(Matrix a, Matrix b, Matrix c, int x) {
     int row = c.size();
     int col = c[0].size();
 
-    vector<vector<complex<double>>> d(row, vector<complex<double>>(1));
+    Matrix d(row, Vector(1));
 
     for (int i = 0; i < x; i++) {
         d = mulMatrix(c, a);
@@ -459,17 +463,17 @@ vector<vector<complex<double>>> vectorMoreEx(vector<vector<complex<double>>> a, 
 }
 
 // 3.2.4
-bool isCol(vector<vector<complex<double>>> a) {
+bool isCol(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
-    complex<double> total;
+    Complex total;
 
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             total += a[i][j];
         }
-        if (total != (complex<double>) 1) {
+        if (total != (Complex) 1) {
             return false;
         }
         total = 0;
@@ -478,11 +482,11 @@ bool isCol(vector<vector<complex<double>>> a) {
     return true;
 }
 
-vector<vector<complex<double>>> colTime(vector<vector<complex<double>>> a, int x) {
+Matrix colTime(Matrix a, int x) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> b = mulMatrix(a, a);
+    Matrix b = mulMatrix(a, a);
     for (int i = 0; i < x - 1; i++) {
         b = mulMatrix(b, a);
     }
@@ -490,7 +494,7 @@ vector<vector<complex<double>>> colTime(vector<vector<complex<double>>> a, int x
     return b;
 }
 
-vector<vector<complex<double>>> colState(vector<vector<complex<double>>> a, int x) {
+Matrix colState(Matrix a, int x) {
     for (int i = 0; i < x; i++) {
         a = colTime(a, x);
     }
@@ -498,11 +502,11 @@ vector<vector<complex<double>>> colState(vector<vector<complex<double>>> a, int 
     return a;
 }
 
-vector<vector<complex<double>>> vecState(vector<vector<complex<double>>> a) {
+Matrix vecState(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
-    vector<vector<complex<double>>> b(row, vector<complex<double>>(1));
+    Matrix b(row, Vector(1));
 
     for (int i = 0; i < row; i++) {
         a = mulMatrix(a, b);
@@ -512,24 +516,20 @@ vector<vector<complex<double>>> vecState(vector<vector<complex<double>>> a) {
 }
 
 // 3.3.1
-bool isColUnitary(vector<vector<complex<double>>> a) {
+bool isColUnitary(Matrix a) {
     return isUnitary(a);
 }
 
-vector<vector<complex<double>>> colUnitaryTime(vector<vector<complex<double>>> a, int x) {
+Matrix colUnitaryTime(Matrix a, int x) {
     return colTime(a, x);
 }
 
-vector<vector<complex<double>>> colUnitaryState(vector<vector<complex<double>>> a, int x) {
+Matrix colUnitaryState(Matrix a, int x) {
     return colState(a, x);
 }
 
-vector<vector<complex<double>>> colUnitaryVecState(vector<vector<complex<double>>> a) {
+Matrix colUnitaryVecState(Matrix a) {
     return vecState(a);
-}
-
-int main() {
-    cout << "hello world" << endl;
 }
 
 // 4.1.6
@@ -540,8 +540,8 @@ int main() {
  * the vector with that value.
  * @return the normalized vector after applying the normvalue.
  */
-vector<complex<double>> stateNorm(vector<complex<double>> a) {
-    complex<double> x = normalize(a);
+Vector stateNorm(Vector a) {
+    Complex x = normalize(a);
 
     for (int i = 0; i < a.size(); i++) {
         a[i] = a[i] / x;
@@ -557,9 +557,9 @@ vector<complex<double>> stateNorm(vector<complex<double>> a) {
  * e^(ir) to get the state vector with the specified phase.
  * @return return the state vector with phase e^(ir).
  */
-vector<complex<double>> statePhase(vector<complex<double>> a, double r) {
+Vector statePhase(Vector a, double r) {
     a = stateNorm(a);
-    complex<double> phase = exp(complex<double>(r));
+    Complex phase = exp(Complex(r));
 
     for (int i = 0; i < a.size(); i++) {
         a[i] = a[i] * phase;
@@ -576,7 +576,7 @@ vector<complex<double>> statePhase(vector<complex<double>> a, double r) {
  * so we just take the conjugate and return its as a row vector. 
  * @return the finite dimensional bra vector assiociated with it. 
  */
-vector<complex<double>> ket2Bra(vector<complex<double>> a) {
+Vector ket2Bra(Vector a) {
     for (int i = 0; i < a.size(); i++) {
         a[i] = conj(a[i]); 
     }
@@ -592,7 +592,7 @@ vector<complex<double>> ket2Bra(vector<complex<double>> a) {
  * so we just take the conjugate and return its as a row vector. 
  * @return the finite dimensional ket vector assiociated with it. 
  */
-vector<complex<double>> bra2Ket(vector<complex<double>> a) {
+Vector bra2Ket(Vector a) {
     for (int i = 0; i < a.size(); i++) {
         a[i] = conj(a[i]); 
     }
@@ -601,13 +601,18 @@ vector<complex<double>> bra2Ket(vector<complex<double>> a) {
 }
 
 /**
- * 
+ * @brief function takes in a ket and bra vectors and find the matrix associated with it
+ * @param a, b are vectors of finite dimensions
+ * calls ket2Bra to one of the matrix since the bra is the dagger of the ket and
+ * multiplies the elements of the matrix togeter
+ * @return the results of the 2d matrix from mulitplying a ket and bra vector
  */
-vector<vector<complex<double>>> ketBraMatrix(vector<complex<double>> a, vector<complex<double>> b) {
+Matrix ketBraMatrix(Vector a, Vector b) {
     int rows = a.size();
     int cols = b.size();
+    b = ket2Bra(b);
 
-    vector<vector<complex<double>>> ketbra(rows, vector<complex<double>>(cols));
+    Matrix ketbra(rows, Vector(cols));
 
     for (int i = 0; i < a.size(); i++) {
         for (int j = 0; j < b.size(); j++) {
@@ -616,4 +621,58 @@ vector<vector<complex<double>>> ketBraMatrix(vector<complex<double>> a, vector<c
     }
 
     return ketbra;
+}
+
+// 4.2.8
+/**
+ * @brief function finds the expected value of the state of the system.
+ * @param a, b, c are an observable and vectors of finite dimensions
+ * Calls stateNorm function to normalize the vector. Goes through the vector to find the probabilty for each state.
+ * @return the Expected value
+ */
+Complex expectedValue(Matrix a, Vector b, Vector c) {
+    Complex ev = 0.0;
+    c = stateNorm(c);
+
+    Vector matrix(c.size(), 0.0);
+
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = 0; j < a[i].size(); j++) {
+            matrix[i] += a[i][j] * c[j];
+        }
+    }
+    
+    for (size_t i = 0; i < c.size(); i++) {
+        ev += conjugate(c[i]) * matrix[i];
+    }
+
+    return ev;
+}
+
+/**
+ * @brief function finds the dispersion of the system.
+ * @param a, b, c are an observable and vectors of finite dimensions
+ * Follows the formula for variance ev^2 - ev^2. Subtracts expected value sqaured by 
+ * every element added together when they are squared.
+ * @return the dispersion of the system.
+ */
+Complex dispersion(Matrix a, Vector b, Vector c) {
+    Complex ev = expectedValue(a, b, c);
+
+    Matrix a_squared(a.size(), Vector(a.size(), 0.0));
+    for (size_t i = 0; i < a.size(); i++) {
+        for (size_t j = 0; j < a.size(); j++) {
+            for (size_t k = 0; k < a.size(); k++) {
+                a_squared[i][j] += a[i][k] * a[k][j];
+            }
+        }
+    }
+
+    Complex ev_squared = expectedValue(a_squared, b, c);
+
+    return ev_squared - (ev * ev);
+}
+
+int main() {
+    cout << "hello world" << endl;
 }
