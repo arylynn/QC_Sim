@@ -3,6 +3,7 @@
 #include <array>
 #include <complex>
 #include <cmath>
+#include <string>
 
 using namespace std;
 
@@ -91,30 +92,63 @@ Complex Exp2Gen(Complex a) {
 }
 
 // 2.1.6
+/**
+ * @brief Adds two complex numbers
+ * @param a, b two complex numbers in the same form.
+ * @return The sum of two complex numbers.
+ */
 Complex add(Complex a, Complex b) {
     return a + b;
 }
 
+/**
+ * @brief Subtracts two complex numbers
+ * @param a, b two complex numbers in the same form.
+ * @return The difference of two complex numbers.
+ */
 Complex sub(Complex a, Complex b) {
     return a - b;
 }
 
+/**
+ * @brief Multiply two complex numbers
+ * @param a, b two complex numbers in the same form.
+ * @return The product of two complex numbers.
+ */
 Complex mul(Complex a, Complex b) {
     return a * b;
 }
 
+/**
+ * @brief Divide two complex numbers
+ * @param a, b two complex numbers in the same form.
+ * @return The quotient of two complex numbers.
+ */
 Complex div(Complex a, Complex b) {
     return a / b;
 }
 
 // 2.1.12
+/**
+ * @brief Conjugates a complex number (the inverse)
+ * @param a complex number in general form
+ * Keeps the real part of the complex number and inverses the imaginary part
+ * @return The conjugate or inverse of the complex number
+ */
 Complex conjugate(Complex a) {
     return Complex(a.real(), -a.imag());
 }
 
+/**
+ * @brief Finds the modulus of the complex number by finding its absolute value
+ * @param a complex number in general form
+ * Calls abs to find the absolute value of complex number
+ * @return modulus of the complex number
+ */
 Complex modulus(Complex a) {
     return abs(a);
 }
+
 
 Complex norm(Complex a) {
     return Exp2Gen(a);
@@ -125,6 +159,11 @@ Complex diff(Complex a, Complex b) {
 }
 
 // 2.1.15
+/**
+ * @brief Performs matrix addition on two matrix of the same size
+ * @param a, b are matrix of the same dimensions
+ * @return the sum of the two matrix being added together
+ */
 Matrix sumMatrix(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
@@ -140,6 +179,12 @@ Matrix sumMatrix(Matrix a, Matrix b) {
     return sum;
 }
 
+/**
+ * @brief Performs scalar multiplication on the entire matrix
+ * @param a, b are matrix of some dimension or vector and a complex number to
+ * multiply it by
+ * @return the product of the scalar multiplication on the matrix or vector
+ */
 Matrix scalarMultiply(Matrix a, Complex b) {
     int row = a.size();
     int col = a[0].size();
@@ -155,6 +200,11 @@ Matrix scalarMultiply(Matrix a, Complex b) {
     return scalar;
 }
 
+/**
+ * @brief Multiplies two matrix together
+ * @param a, b are matrix with the same number of columns to rows
+ * @return the product of the two matrix multplied together
+ */
 Matrix mulMatrix(Matrix a, Matrix b) {
     int rowa = a.size();
     int cola = a[0].size();
@@ -174,6 +224,11 @@ Matrix mulMatrix(Matrix a, Matrix b) {
     return product;
 }
 
+/**
+ * @brief Rotates the matrix to the right 
+ * @param a is a matrix of some dimension
+ * @return the rotate matrix that has been rotated to the right
+ */
 Matrix transposeMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
@@ -190,6 +245,13 @@ Matrix transposeMatrix(Matrix a) {
 }
 
 // 2.1.20
+/**
+ * @brief Performs mconjugation on the entire matrix
+ * @param a are matrix of some dimension
+ * Calls conjugate function to inverse the complex number in the matrix
+ * if the number is real it does nothing. As the conjugate of a real is itself
+ * @return conjugatation of the entire matrix
+ */
 Matrix conjugateMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
@@ -205,6 +267,13 @@ Matrix conjugateMatrix(Matrix a) {
     return conjugateM;
 }
 
+/**
+ * @brief Finds the dagger of the matrix. Which is the tranpose
+ * and the conjugate of the matrix
+ * @param a are matrix of some dimension
+ * Calls the transpose and conjugate function on the matrix to get the dagger
+ * @return the dagger of the matrix after it has been transposed and conjugated
+ */
 Matrix daggerMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
@@ -216,6 +285,7 @@ Matrix daggerMatrix(Matrix a) {
 
     return matrix;
 }
+
 
 Matrix traceMatrix(Matrix a) {
     int row = a.size();
@@ -236,6 +306,14 @@ Matrix traceMatrix(Matrix a) {
 }
 
 // 2.2.18
+/**
+ * @brief Finds the normalized value of the vector
+ * @param a vector of some size. We find its normalized value of the vector by
+ * adding all the elements in the vecotr to its conjugate.
+ * Normalized value = (complex # * -complex #). Adding this togther for all
+ * elements in the vector and square root the sum to get the value. 
+ * @return the normalized value of the vector
+ */
 Complex normalize(Vector a) {
     int row = a.size();
     Complex normValue = 0;
@@ -248,6 +326,7 @@ Complex normalize(Vector a) {
 
     return normValue;
 }
+
 
 Vector normMatrix(Vector a) {
     int row = a.size();
@@ -262,11 +341,23 @@ Vector normMatrix(Vector a) {
     return normv;
 }
 
+/**
+ * @brief Checks to see if a vector is normal
+ * @param a Vector of some size. We check to see if it is normal
+ * by seeing if its normalzied value if equal to 1. 
+ * @return True if the noramalized value is equal 1. Otherwise False. 
+ */
 bool isNormal(Vector a) {
     Complex b = 1;
     return normalize(a) == b;
 }
 
+/**
+ * @brief Checks to see if the vector is orthogonal
+ * @param a vector of some size. It is orthogonal when the vector is if the
+ * next element in the vector is equal to the previous element. 
+ * @return True if vector is orthogonal and if otherwise False
+ */
 bool isOrthogonal(Vector a) {
     int row = a.size();
     Complex total = a[0];
@@ -282,6 +373,11 @@ bool isOrthogonal(Vector a) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the vector is orthonormal
+ * @param a vector of some size. It is orthonormal when the vector is both normal and orthogonal. 
+ * @return True if vector is orthonormal and if otherwise False
+ */
 bool isOrthonormal(Vector a) {
     return isNormal(a) && isOrthogonal(a);
 }
@@ -673,6 +769,138 @@ Complex dispersion(Matrix a, Vector b, Vector c) {
     return ev_squared - (ev * ev);
 }
 
+// 2.6.4
+/**
+ * @brief find the bit in the nth position of the string
+ * @param bit, nth takes in a string bit which is the entire string
+ * takes in an integer to find the bit in that position
+ * @return the bit in that spot
+ */
+int nthBit(string bit, int nth) {
+    int x = 0;
+    for (int x = 0; x < nth + 1; x++) {
+        x = (int) bit[x];
+    }
+
+    return x;
+}
+
+/**
+ * @brief finds the compliment of a binary string
+ * @param bit takes in a string of binary numbers
+ * loop through the binary string and change it from 0 -> 1 or from 1 -> 0
+ * @return thes the compliment of binary string
+ */
+string bitCompliment(string bit) {
+    for (int x = 0; x < bit.length(); x++) {
+        if (bit[x] == 0) {
+            bit[x] = 1;
+        } else {
+            bit[x] = 0;
+        }
+    }
+
+    return bit;
+}
+
+/**
+ * @brief find the parity Prt(x) of the binary string
+ * @param bit takes in a string of binary numbers
+ * loop through the binary string and add all the numbers together
+ * @return if the number is even return 0 and odd return 1
+ */
+int parity(string bit) {
+    int x = 0;
+    for (int x = 0; x < bit.length(); x++) {
+        x += bit[x]; 
+    }
+
+    return (x % 2 == 0) ? 0 : 1;
+}
+
+/**
+ * @brief finds the exculsive or of two binary string
+ * @param a,b takes in two binary strings
+ * loop the strings of binary numbers and check to see if the numbers are equal at nth position
+ * @return 1 if the bits are not the same and 0 when the bits are the same
+ */
+string exor(string a, string b) {
+    string s = "";
+    for (int x = 0; x < a.length(); x++) {
+        s = (a[x] != b[x]) ? '1' : '0';
+    }
+
+    return s;
+}
+
+/**
+ * @brief finds the conjucnction or and of two binary strings
+ * @param a,b takes in two binary strings
+ * loop the strings of binary numbers and check to see if the numbers are equal at nth position
+ * if both bits at the nth position are both 1 
+ * @return 1 if the bits are both 1 in the nth posiiton and 0 otherwise
+ */
+string bitconjuction(string a, string b) {
+    string s = "";
+    for (int x = 0; x < a.length(); x++) {
+        if (a[x] == '1' && b[x] == '1') {
+            s += "1";
+        } else {
+            s += "0";
+        }
+    }
+
+    return s;
+}
+
+/**
+ * @brief finds the inner product of two binary string
+ * @param a,b takes in two binary strings
+ * calls bit conjuction to find the AND of two binary string
+ * the uses the return from bitconjuction() function call we call parity()
+ * which finds the parity of the string  
+ * @return 1 if the sum of the bits is off and 0 if it is even
+ */
+int innerProduct(string a, string b) {
+    return parity(bitconjuction(a, b));
+}
+
+/**
+ * @brief converts binary numbers to base 10 numbers
+ * @param a takes in one binary string
+ * we start from the left of the string and we take takes the length - 1 - x to get the exponet
+ * @return the converted number in base 10
+ */
+int binaryToNormal(string a) {
+    int sum = 0;
+    for (int x = 0; x < a.length(); x++) {
+        sum += (int) pow(a[x], (a.length() - 1) - x);
+    }
+
+    return sum;
+}
+
+/**
+ * @brief converts integers base 10 to binary numbers
+ * @param a takes in one binary string
+ * repeatly divide the integer by 2 and find the remainder and continue
+ * @return the binary string 
+ */
+string normalToBinary(int a) {
+    string s = "";
+    while (a > 0) {
+        if (a % 2 == 0) {
+            s = '0' + s;
+        } else {
+            s = '1' + s;
+        }
+        a /= 2;
+    }
+
+    return s;
+}
+
 int main() {
     cout << "hello world" << endl;
+    return 0;
 }
