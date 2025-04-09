@@ -7,9 +7,9 @@
 
 using namespace std;
 
-typedef vector<vector<complex<double>>> Matrix;
-typedef vector<complex<double>> Vector;
-typedef complex<double> Complex;
+typedef vector<vector<complex<double>>> Matrix; // Matrix type
+typedef vector<complex<double>> Vector; // vector type
+typedef complex<double> Complex; // complex numbers type
 
 // 2.1.3
 /**
@@ -149,13 +149,28 @@ Complex modulus(Complex a) {
     return abs(a);
 }
 
-
+/**
+ * @brief Finds the normal or normalized form of a complex number
+ * @param a complex number in general form
+ * takes the real and imaginary part of the complex number and add the square of them together 
+ * a^2 + b^2 and then we take the sqrt of them sqrt(a^2 + b^2) 
+ * and we set this as the denominator for the real and imaginary part of the complex number
+ * @return normal or normalized form of the complex number
+ */
 Complex norm(Complex a) {
-    return Exp2Gen(a);
+    double magnitude = sqrt(a.real() * a.real() + a.imag() * a.imag());
+    return Complex(a.real() / magnitude, a.imag() / magnitude);
 }
 
-Complex diff(Complex a, Complex b) {
-    return abs(a) + abs(b) - (abs(a) + abs(b));
+/**
+ * @brief Finds the difference between the sum of the moduli and the modulus of the sum
+ * @param a, b two complex numbers in general form
+ * gets the abs value of both a and b complex number sums them together
+ * then get the sum of a + b and the abs value of that sum subtract them together
+ * @return the difference of the moduli and modulus of the two complex number
+ */
+double diff(Complex a, Complex b) {
+    return abs(a) + abs(b) - (abs(a + b));
 }
 
 // 2.1.15
@@ -286,8 +301,13 @@ Matrix daggerMatrix(Matrix a) {
     return matrix;
 }
 
-
-Matrix traceMatrix(Matrix a) {
+/**
+ * @brief Finds the trace of a matrix
+ * @param a are matrix of some dimension
+ * adds all the value of the diagonal of the matrix [x,x]
+ * @return the trace of the matrix
+ */
+Complex traceMatrix(Matrix a) {
     int row = a.size();
     int col = a[0].size();
     Complex total = 0;
@@ -302,7 +322,7 @@ Matrix traceMatrix(Matrix a) {
         }
     }
 
-    return trace;
+    return total;
 }
 
 // 2.2.18
@@ -327,8 +347,16 @@ Complex normalize(Vector a) {
     return normValue;
 }
 
-
-Vector normMatrix(Vector a) {
+/**
+ * @brief Finds the normalized vector
+ * @param a vector of some size. We find its normalized value of the vector by
+ * adding all the elements in the vecotr to its conjugate.
+ * Normalized value = (complex # * -complex #). Adding this togther for all
+ * elements in the vector and square root the sum to get the value. 
+ * divide all elements of the vector by the noramlized value
+ * @return the normalized value of the vector
+ */
+Vector normVector(Vector a) {
     int row = a.size();
     Complex total = 0;
 
@@ -383,6 +411,12 @@ bool isOrthonormal(Vector a) {
 }
 
 // 2.3.5
+/**
+ * @brief Checks to see if the two vectors are equal
+ * @param a,b two vectors of some size. Checks to see if the elements
+ * in the vectors are equal and if the size is equal
+ * @return True if the two vectors are equal and false otherwise.
+ */
 bool isEqual(Vector a, Vector b) {
     int row = a.size();
 
@@ -395,6 +429,12 @@ bool isEqual(Vector a, Vector b) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the two matrix are equal
+ * @param a,b two matrix of some size. Checks to see if the elements
+ * in the matrix are equal and if the size is equal
+ * @return True if the two matrix are equal and false otherwise.
+ */
 bool isEqual(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
@@ -410,6 +450,14 @@ bool isEqual(Matrix a, Matrix b) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the a matrix is symetric
+ * @param a matrix of some size. 
+ * Checks to see if the see if the diagonal of the matrix is equal
+ * so at [0,1] we check to see if it is the same as [1,0]
+ * @return True if the the matrix is symetric when all elements are symetrix 
+ * false otherwise.
+ */
 bool isSymmetric(Matrix a) {
     Matrix b = transposeMatrix(a);
     int row = a.size();
@@ -426,6 +474,12 @@ bool isSymmetric(Matrix a) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the a matrix is orthongonal
+ * @param a matrix of some size. 
+ * Checks to see if the see if the diagonal of the matrix is equal is equal to 1
+ * @return True if the the matrix is symetric when all elements all equal to 1 false otherwise.
+ */
 bool isOrthogonalMatrix(Matrix a) {
     Matrix b = transposeMatrix(a);
     a = mulMatrix(a, b);
@@ -444,6 +498,13 @@ bool isOrthogonalMatrix(Matrix a) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the a matrix is hermintian
+ * @param a matrix of some size. 
+ * Checks to see if the see if the diagonal of the matrix is equal to the mirror
+ * so at [1,1] we check if [1,0] are equal
+ * @return True if the the matrix is hermitian false otherwise.
+ */
 bool isHermitian(Matrix a) {
     Matrix b = daggerMatrix(a);
     int row = a.size();
@@ -460,6 +521,12 @@ bool isHermitian(Matrix a) {
     return true;
 }
 
+/**
+ * @brief Checks to see if the a matrix is unitary
+ * @param a matrix of some size. 
+ * Takes the dagger of the matrix and check sto see if the diagonal of the matrix is equal to 1
+ * @return True if the the matrix is unitary false otherwise.
+ */
 bool isUnitary(Matrix a) {
     Matrix b = daggerMatrix(a);
     a = mulMatrix(a, b);
@@ -479,11 +546,50 @@ bool isUnitary(Matrix a) {
 }
 
 // 2.3.10
+/**
+ * @brief Checks to see if the complex number and complex vector
+ * is the eigenvalue and eigen vector of a complex matrix
+ * @param a,b,c takes in a matrix of some size
+ * takes in a complex vector of some size
+ * takes in a complex number
+ * Checks to see if the complex number is the eigen value and checks to see if the vector
+ * is the eigenvector to the matrix a.
+ * @return True if the the the vector and complex number are the eigenvalue and eigenvalue.
+ */
 bool isEigen(Matrix a, Vector b, Complex c) {
+    size_t n = a.size();
+    Vector ab(n, Complex(0.0, 0.0));
+    for (size_t i = 0; i < n; ++i) {
+        if (a[i].size() != n) {
+            return false;
+        }
+        for (size_t j = 0; j < n; ++j) {
+            ab[i] += a[i][j] * b[j];
+        }
+    }
+    
+    Vector cb(n);
+    for (size_t i = 0; i < n; ++i) {
+        cb[i] = c * b[i];
+    }
+    
+    double epsilon = 1e-9;
+    for (size_t i = 0; i < n; ++i) {
+        if (abs(ab[i] - cb[i]) > epsilon) {
+            return false;
+        }
+    }
+    
     return true;
 }
 
 // 2.4.7
+/**
+ * @brief Finds the tensor of two matrix of either 1d or 2d
+ * @param a,b two matrix that are either 1d or 2d
+ * Takes each element in matrix and multiply it by the entire matrix b
+ * @return Tensor value of the matrix
+ */
 Matrix tensor(Matrix a, Matrix b) {
     int row = a.size();
     int col = a[0].size();
@@ -501,6 +607,12 @@ Matrix tensor(Matrix a, Matrix b) {
 }
 
 // 3.1.7
+/**
+ * @brief Checks to see if a 2d matrix is a boolean column stochastic matrix (matrix with only 1 and 0)
+ * @param a a 2d matrix of some dimension 
+ * Checks the entire matrix to see if it is either a 0 or a 1 only
+ * @return returns true if it is a boolean column stochastic matrix and false if not
+ */
 bool isEigen(Matrix a) {
     int row = a.size();
     int col = a[0].size();
@@ -516,15 +628,28 @@ bool isEigen(Matrix a) {
     return true;
 }
 
+/**
+ * @brief Multiplies a square matrix by a postive integer value
+ * @param a,x a square of some dimension and a postive integer
+ * Takes each element of the matrix multiply for the integer passed in
+ * @return product of the matrix multiplye by the interger
+ */
 Matrix matrixEx(Matrix a, int x) {
-    for (int i = 0; i < x; i++) {
-        a = mulMatrix(a, a);
+    for (int i = 0; i < a.size(); i++) {
+        for (int j = 0; j < a[0].size(); j++) {
+            a[i][j] = a[i][j] * (Complex) x;
+        }
     }
 
     return a;
 }
 
-
+/**
+ * @brief Multiplies a square matrix by a vector x amount of times
+ * @param a,b,x a matrix of some size m x m, vectors of some size m , a postive integer 
+ * multiplies the matrix by a vector x amount of times
+ * @return the state of the matrix after multiplying by a vector x amount of time
+ */
 Matrix vectorEx(Matrix a, Matrix b, int x) {
     int row = b.size();
     int col = b[0].size();
@@ -538,27 +663,41 @@ Matrix vectorEx(Matrix a, Matrix b, int x) {
     return c;
 }
 
-Matrix vectorMoreEx(Matrix a, Matrix b, Matrix c, int x) {
-    int row = c.size();
-    int col = c[0].size();
+/**
+ * @brief Multiplies a matrix and a vector together to find the state of the vector
+ * @param a,b,a swaure boolean column stohastic matrix and a vector of m x 1 size with postive integers 
+ * multiplies the matrix by a vector to get the state of the vector
+ * @return the state of the vector after mutlplugin a vector by a matrix.
+ */
+Matrix vectorMoreEx(Matrix a, Matrix b) {
+    int row = a.size();
+    int col = a[0].size();
 
     Matrix d(row, Vector(1));
 
-    for (int i = 0; i < x; i++) {
-        d = mulMatrix(c, a);
-    }
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < row; j++) {
+            Complex count = 0;
+            for (int k = 0; k < row; k++) {
+                if (b[k][j] == (Complex) 1) count+= 1;
+            }
 
-    int z = x;
-    z = 0;
-
-    for (int i = 0; i < z; i++) {
-        d = mulMatrix(c, b);
+            if (b[i][j] == (Complex) 1) {
+                d[i][0] += a[j][0] / count;
+            }
+        }
     }
 
     return d;
 }
 
 // 3.2.4
+/**
+ * @brief Checks to see if a matrix is a column stohastic matrix
+ * @param a a matrix of some size
+ * Checks to see if the columns of the matrix add up to 1
+ * @return true if it is a column stohastic matrix false otherwise
+ */
 bool isCol(Matrix a) {
     int row = a.size();
     int col = a[0].size();
@@ -578,52 +717,95 @@ bool isCol(Matrix a) {
     return true;
 }
 
+/**
+ * @brief multiplies a column stocastic matrix by itself x times
+ * @param a, x  a column stocastich matrix and a postive integer
+ * multiplies a column stohastic matri by itself x amount of times m^x
+ * @return the product of the matrix after m^x
+ */
 Matrix colTime(Matrix a, int x) {
     int row = a.size();
     int col = a[0].size();
 
     Matrix b = mulMatrix(a, a);
-    for (int i = 0; i < x - 1; i++) {
+    for (int i = 0; i < x; i++) {
         b = mulMatrix(b, a);
     }
 
     return b;
 }
 
+/**
+ * @brief finds the state of the system after n times
+ * @param a, x a column stoahstic matrix and a postive integer
+ * returns the first n state sof the system by calling colTime()
+ * @return the first n states of the system 
+ */
 Matrix colState(Matrix a, int x) {
-    for (int i = 0; i < x; i++) {
-        a = colTime(a, x);
-    }
-
-    return a;
+    return colTime(a, x);
 }
 
+/**
+ * @brief finds the state of a matrix through a corresponding vector
+ * @param a m x m column stoahstic matrix 
+ * the m x m square column stohastic matrix multiplies by a vector [1, 0, ... 0] transpose
+ * to get the state of the system after mutlplyiing these two and expressing it as a vector
+ * @return the vector tht represents the state of the system
+ */
 Matrix vecState(Matrix a) {
     int row = a.size();
     int col = a[0].size();
 
     Matrix b(row, Vector(1));
-
+    b[0][1] = (Complex) 1;
+    
     for (int i = 0; i < row; i++) {
-        a = mulMatrix(a, b);
+        b = mulMatrix(a, b);
     }
 
-    return a;
+    return b;
 }
 
 // 3.3.1
+/**
+ * @brief Checks to see if a matrix is a column unitary matrix
+ * @param a is a matrix of some size
+ * Calls isUnitary() to see if a matrix is unitary. if it is unitary it 
+ * is also a column untiary matrix
+ * @return true if it is a column unitary matrix false otherwise
+ */
 bool isColUnitary(Matrix a) {
     return isUnitary(a);
 }
 
+/**
+ * @brief Multiplies a column untiary matrix by itself n times
+ * @param a, x is a column unitary matrix, and a postive integer
+ * Calls colTime() to mulitply the amtrix to itself n times a^n
+ * @return the matrix after the multiplication is done
+ */
 Matrix colUnitaryTime(Matrix a, int x) {
     return colTime(a, x);
 }
 
+/**
+ * @brief Finds the first n states of a matrix
+ * @param a, x is a column unitary matrix, and a postive integer
+ * Calls colState() to find the first n states by multiplying the matrix
+ * n times to get its states
+ * @return the frist n states of the matrix
+ */
 Matrix colUnitaryState(Matrix a, int x) {
     return colState(a, x);
 }
 
+/**
+ * @brief Multiplies a column untiary matrix by a vector to get a vector to describe its state
+ * @param a is a column unitary matrix
+ * Calls vecState() to get the state of the matrix that can be describes by a vector.
+ * multplies the matrix by a vector of [1,0...0]^t
+ * @return the vector that corresppond to the state of the matrix
+ */
 Matrix colUnitaryVecState(Matrix a) {
     return vecState(a);
 }
@@ -899,6 +1081,147 @@ string normalToBinary(int a) {
 
     return s;
 }
+
+// 5.1.9
+/**
+ * @brief Takes in a binary string creates a boolean matrix where it is all 0 but at the nth spot is a 1
+ * @param s takes in one binary string
+ * converts the binary string to deciaml numbers and at that spot in the matrix is a 1. 0101 -> 5
+ * The matrix will be 15x1 and at the 5th position it will be 1 and the rest is 0
+ * @return the boolean matrix.
+ */
+Matrix boolMatrix(string s) {
+    int x = binaryToNormal(s);
+    int max = (int) pow(2, s[0]);
+
+    int row = x;
+    int col = 1;
+
+    Matrix m(row, Vector(col));
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (i == x) {
+                m[i][j] = 1;
+            }
+
+            m[i][j] = 0;
+        }
+    }
+
+    return m;
+}
+
+/**
+ * @brief Creates a matrix of uniform probabilty of all the same number for every element in the matrix
+ * @param n takes in an integer to do 2^n
+ * Takes in an integer performs 2^n. The matrix will be 2^n x 1 size. Every element in the matrix 
+ * will be 1/2^n
+ * @return the uniform probabilty matrix.
+ */
+Matrix uniformProbMatrix(int n) {
+    int max = pow(2, n);
+    int row = max;
+    int col = 1;
+
+    Matrix m(row, Vector(col));
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            m[i][j] = 1 / max;
+        }
+    }
+
+    return m;
+}
+
+
+/**
+ * @brief Finds the theta and the phi for the angle of a bloch sphere from a qubit
+ * @param a,b are two complex numbers to descirbe a qubit
+ * Takes in a complex number and calls norm to find the normailied value for the number for both complex numbers
+ * Finds the longitude and latiude by using 2 * arccose(a) for long
+ * and latitude is arctan^2(imaginary part of b, and imaginary part for a)
+ * @return the the pair of number {theta, phi}
+ */
+pair<Complex, Complex> qubitAngle(Complex a, Complex b) {
+    a = norm(a);
+    b = norm(b);
+
+    Complex longitude = (complex<double>) 2 * acos(a);
+    Complex latitude = atan2(b.imag(), a.imag());
+
+    return {a, b};
+}
+
+/**
+ * @brief Finds the probability that the qubit is in that state of the vector
+ * @param a,b are a vector of complex number and a binary string
+ * Takes in a binary string and converts it to decimal 10 -> 2
+ * the state we are checking will be at v[2] of the vector
+ * to find the probabilty it is v[2] * v[2]
+ * @return the the probabilty of the that it is found in that state.
+ */
+Complex probQubit(Vector v, string s) {
+    int x = binaryToNormal(s);
+    Complex prob =  v[x] * v[x];
+    return prob;
+}
+
+/**
+ * @brief Assumes that the first bit measured is |1> and we calculate the state of the vector
+ * @param v takes in a vectors of some size
+ * We calculate the probabilty of the state of the vector. Given that the the probabilty is 1/sqrt(length of the vector)
+ * Since we assumed that the bit is at state |1> we know that it is not in state |0> so half of the bit can we eleminated
+ * So it will become 1/length of vector. and the first half of the new vector will be 0 and the later half is 1/length of vector
+ * @return the new vector of the state probabilty.
+ */
+Vector probState(Vector v) {
+    Complex prob = 1 / v.size();
+
+    for (int x = 0; x < v.size(); x++) {
+        if (x < v.size() / 2) {
+            v[x] = 0;
+        } else {
+            v[x] = prob;
+        }
+    }
+
+    return v;
+}
+
+/**
+ * @brief Has the user input which bit to measure and return the state of the vector
+ * @param v, j are a vector of some size and a user input of an integer for which bit to measure
+ * Takes in user input for which bit to measure. Given that a bit can be anywhere we take the user input if the bit is in 
+ * state |1> we recalaute the probabilty and state |0> will 0. if th bit is in state |0> we recaluate the probabilty and state
+ * |1> will be 0.
+ * @return the the new probabilty for the state of the vector
+ */
+Vector probStateInput(Vector v, int j) {
+    Complex prob = 1 / v.size();
+
+    if (j >= v.size() / 2) {
+        for (int x = 0; x < v.size(); x++) {
+            if (x < v.size() / 2) {
+                v[x] = 0;
+            } else {
+                v[x] = prob;
+            }
+        }
+    } else {
+        for (int x = 0; x < v.size(); x++) {
+            if (x < v.size() / 2) {
+                v[x] = 1;
+            } else {
+                v[x] = 0;
+            }
+        }
+    }
+
+    return v;
+}
+
 
 int main() {
     cout << "hello world" << endl;
