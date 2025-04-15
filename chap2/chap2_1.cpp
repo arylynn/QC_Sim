@@ -6,10 +6,11 @@
 #include <string>
 
 using namespace std;
+using namespace std::complex_literals;
 
-typedef vector<vector<complex<double>>> Matrix; // Matrix type
-typedef vector<complex<double>> Vector; // vector type
-typedef complex<double> Complex; // complex numbers type
+using Matrix = vector<vector<complex<double>>>;
+using Vector = vector<complex<double>>;
+using Complex = complex<double>;
 
 // 2.1.3
 /**
@@ -1222,6 +1223,25 @@ Vector probStateInput(Vector v, int j) {
     return v;
 }
 
+// 5.2.4
+Matrix identityMatrix(int size) {
+    Matrix id(size, Vector(size, {0, 0}));
+    for (int i = 0; i < size; ++i) {
+        id[i][i] = {1, 0};
+    }
+    return id;
+}
+
+Matrix hadamardGate(int num, int control, int target) {
+    Matrix hadamard = {{1/sqrt(2), 1/sqrt(2)}, 
+                    {1/sqrt(2), -1/sqrt(2)}};
+
+    for (int x = 0; x < num; x++) {
+        hadamard = tensor(hadamard, hadamard);
+    }
+
+    return hadamard;
+}
 
 int main() {
     cout << "hello world" << endl;
